@@ -188,7 +188,7 @@ namespace Jayrock.JsonRpc.Web
             }
     
             writer.Write("var url = typeof(url) === 'string' ? url : '");
-            writer.Write(url);
+            writer.Write(url.AbsolutePath);
             writer.WriteLine("';");
             writer.WriteLine(@"var nextId = 0;
 
@@ -301,7 +301,7 @@ namespace Jayrock.JsonRpc.Web
     var proxy = {
 
         url : """);
-            writer.Write(url);
+            writer.Write(url.AbsolutePath);
             writer.Write(@""",
         rpc : {");
             writer.WriteLine();
