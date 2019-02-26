@@ -30,6 +30,7 @@ namespace Jayrock.Json.Conversion
     using System.Diagnostics;
     using Jayrock.Json.Conversion.Converters;
     using Jayrock.Reflection;
+    using System.Linq;
 
     #endregion
     
@@ -137,7 +138,14 @@ namespace Jayrock.Json.Conversion
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
                 return new EnumerableExporter(type);
-            
+
+            if (type.IsGenericType)
+            {
+                IExporter exporter = StockExporters[type.GetGenericTypeDefinition()];
+                if (exporter != null)
+                    return exporter;
+            }
+
             if ((type.IsPublic || type.IsNestedPublic) &&
                 !type.IsPrimitive && !type.IsEnum &&
                 (type.IsValueType || type.GetConstructors().Length > 0))
